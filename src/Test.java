@@ -13,5 +13,7 @@ public class Test {
         HuffmanEncoder.Node root = HuffmanEncoder.encode(c);
         HuffmanEncoder.printTree(root);
         System.out.println("ABL: " + HuffmanEncoder.getABL(root));
+        System.out.println("Encoding(e): " + HuffmanEncoder.getEncoding(root, 'e'));
+        System.out.println("Bits(Encoding(e)): " + HuffmanEncoder.getNEncodingBits(root, 'e'));
     }
 }
