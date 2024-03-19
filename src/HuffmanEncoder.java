@@ -66,6 +66,34 @@ public class HuffmanEncoder {
         printTree(n.right, depth+1, false); // print right tree
     }
 
+    /**
+     * Calculates the maximum number of bits needed to represent this encoding.
+     * @param root the root of the Huffman encoding tree.
+     * @return the maximum number of bits needed to represent this encoding.
+     */
+    public static int getABL(Node root) {
+        return getDepth(root, 0);
+    }
+
+    /**
+     * Recursively calculates the depth of a binary tree.
+     * @param n the initial node.
+     * @param depth the depth of 'n'.
+     * @return the depth of the subtree of 'n'.
+     */
+    private static int getDepth(Node n, int depth) {
+        if (n == null) return depth;
+
+        int leftDepth = 0, rightDepth = 0;
+        if (n.left != null)  leftDepth  = getDepth(n.left, depth+1);
+        if (n.right != null) rightDepth = getDepth(n.right, depth+1);
+
+        int maxDepth = depth;
+        if (leftDepth > maxDepth) maxDepth = leftDepth;
+        if (rightDepth > maxDepth) maxDepth = rightDepth;
+        return maxDepth;
+    }
+
     public static void main(String[] args) {
         List<HuffmanCharacter> c = new ArrayList<>();
         c.add(new HuffmanCharacter('a', 45));
@@ -76,5 +104,6 @@ public class HuffmanEncoder {
         c.add(new HuffmanCharacter('f', 5));
         Node root = HuffmanEncoder.encode(c);
         HuffmanEncoder.printTree(root);
+        System.out.println("ABL: " + HuffmanEncoder.getABL(root));
     }
 }
