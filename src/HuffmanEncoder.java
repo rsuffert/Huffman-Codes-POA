@@ -10,31 +10,31 @@ public class HuffmanEncoder {
     /**
      * Internal class that represents a node of the Huffman encoding tree.
      */
-    public static class Node {
-        public HuffmanCharacter hc;
-        public Node left, right;
-    }
+    public static record Node(Char hc, Node left, Node right) {}
+
+    /**
+     * Internal class that represents a character with its frequency.
+     */
+    public static record Char(Character character, float frequency) {}
 
     /**
      * Builds the Huffman encoding tree of a given set of characters and their frequencies.
      * @param characters the list of characters & frequencies for which the tree should be built.
      * @return the root node of the tree.
      */
-    public static Node generateTree(List<HuffmanCharacter> characters) {
+    public static Node generateTree(List<Char> characters) {
         // create a priority queue that keeps the Huffman characters ordered by their frequency in ascending order
         PriorityQueue<Node> pq = new PriorityQueue<>((node1, node2) -> Float.compare(node1.hc.frequency(), node2.hc.frequency()));
         for (int i=0; i<characters.size(); i++) {
-            Node n = new Node();
-            n.hc = characters.get(i);
+            Node n = new Node(characters.get(i), null, null);
             pq.add(n);
         }
 
         // iterate over the ordered characters to build the tree
         for (int i=1; i<characters.size(); i++) {
-            Node n = new Node();
-            n.right = pq.poll();
-            n.left  = pq.poll();
-            n.hc = new HuffmanCharacter(null, n.right.hc.frequency()+n.left.hc.frequency());
+            Node right = pq.poll(), left = pq.poll();
+            Char hc = new Char(null, right.hc.frequency()+left.hc.frequency());
+            Node n = new Node(hc, left, right);
             pq.add(n);
         }
 
