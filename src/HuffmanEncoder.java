@@ -4,6 +4,8 @@ import java.util.PriorityQueue;
 
 /**
  * Utility class for building Huffman codes.
+ * @author Ricardo B. Süffert.
+ * @version 1.0.0.
  */
 public class HuffmanEncoder {
 
@@ -19,7 +21,7 @@ public class HuffmanEncoder {
 
     /**
      * Builds the Huffman encoding tree of a given set of characters and their frequencies.
-     * @param characters the list of characters & frequencies for which the tree should be built.
+     * @param characters the list of characters and frequencies for which the tree should be built.
      * @return the root node of the tree.
      */
     public static Node generateTree(List<Char> characters) {
