@@ -64,9 +64,8 @@ public class HuffmanEncoder {
             System.out.print(String.format("|__ (%c)", left==true? '0' : '1'));
         else if (n.left != null || n.right != null) // print symbol of root if the tree isn't made up of a single element (if it is, print only the element)
             System.out.print("[    ROOT    ]");
-        if (n.hc.character() != null) { // print node character
+        if (n.hc.character() != null) // print node character
             System.out.print(" " + n.hc.character());
-        }
         System.out.println();
 
         printTree(n.left, depth+1, true); // print left tree
@@ -78,7 +77,7 @@ public class HuffmanEncoder {
      * @param root the root of the Huffman encoding tree.
      * @return the maximum number of bits needed to represent this encoding.
      */
-    public static int getABL(Node root) {
+    public static int getMaxBitLength(Node root) {
         return getDepth(root, 0);
     }
 
@@ -95,6 +94,7 @@ public class HuffmanEncoder {
         if (n.left != null)  leftDepth  = getDepth(n.left, depth+1);
         if (n.right != null) rightDepth = getDepth(n.right, depth+1);
 
+        // return maximum depth among current depth, left depth and right depth
         int maxDepth = depth;
         if (leftDepth > maxDepth) maxDepth = leftDepth;
         if (rightDepth > maxDepth) maxDepth = rightDepth;
@@ -110,7 +110,7 @@ public class HuffmanEncoder {
      */
     public static String getEncoding(Node root, char c) throws NoSuchElementException {
         String encoding = getEncoding(root, c, "");
-        if (encoding == "") throw new NoSuchElementException();
+        if (encoding == "") throw new NoSuchElementException(String.format("Character '%c' is not present in the given tree.", c));
         return encoding;
     }
 
@@ -122,19 +122,18 @@ public class HuffmanEncoder {
      * @return the encoding of 'c'.
      */
     private static String getEncoding(Node n, char c, String enc) {
-        if (n.hc.character() != null && n.hc.character() == c) return enc;
+        if (n.hc.character() != null && n.hc.character() == c) return enc; // investigate current node
 
-        String e = null;
-        if (n.left != null) {
-            e = getEncoding(n.left, c, enc+"0");
-            if (!e.equals("")) return e;
+        if (n.left != null) { // investigate left node
+            String e = getEncoding(n.left, c, enc+"0");
+            if (!e.equals("")) return e; // if c has been found in the subtree, return it
         }
-        if (n.right != null) {
-            e = getEncoding(n.right, c, enc+"1");
-            if (!e.equals("")) return e;
+        if (n.right != null) { // investigate right node
+            String e = getEncoding(n.right, c, enc+"1");
+            if (!e.equals("")) return e; // if c has been found in the subtree, return it
         }
 
-        return "";
+        return ""; // signal c has not been found in current subtree
     }
 
     /**
@@ -144,7 +143,7 @@ public class HuffmanEncoder {
      * @return the number of bits of the representation of 'c'.
      * @throws NoSuchElementException if 'c' is not in the given Huffman encoding tree.
      */
-    public static int getNEncodingBits(Node root, char c) throws NoSuchElementException {
+    public static int getBitLength(Node root, char c) throws NoSuchElementException {
         return getEncoding(root, c).length();
     }
 }

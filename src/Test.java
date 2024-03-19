@@ -12,8 +12,8 @@ public class Test {
         c.add(new HuffmanCharacter('f', 5));
         HuffmanEncoder.Node root = HuffmanEncoder.encode(c);
         HuffmanEncoder.printTree(root);
-        System.out.println("ABL: " + HuffmanEncoder.getABL(root));
+        System.out.println("Max. bits length: " + HuffmanEncoder.getMaxBitLength(root));
         System.out.println("Encoding(e): " + HuffmanEncoder.getEncoding(root, 'e'));
-        System.out.println("Bits(Encoding(e)): " + HuffmanEncoder.getNEncodingBits(root, 'e'));
+        System.out.println("|Encoding(e)|: " + HuffmanEncoder.getBitLength(root, 'e'));
     }
 }
