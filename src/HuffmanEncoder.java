@@ -55,7 +55,7 @@ public class HuffmanEncoder {
      * Recursive method that effectively prints the Huffman encoding tree.
      * @param n the node where the tree starts.
      * @param depth the depth of the passed node.
-     * @param left whether or not 'n' is a left node.
+     * @param left whether or not {@code n} is a left node.
      */
     private static void printTree(Node n, int depth, boolean left) {
         if (n == null) return;
@@ -86,8 +86,8 @@ public class HuffmanEncoder {
     /**
      * Recursively calculates the depth of a binary tree.
      * @param n the initial node.
-     * @param depth the depth of 'n'.
-     * @return the depth of the subtree of 'n'.
+     * @param depth the depth of {@code n}.
+     * @return the depth of the subtree of {@code n}.
      */
     private static int getDepth(Node n, int depth) {
         if (n == null) return depth;
@@ -107,8 +107,8 @@ public class HuffmanEncoder {
      * Returns the Huffman encoding for a given character and a given Huffman tree.
      * @param root the root of the Huffman encoding tree.
      * @param c the character whose encoding is to be found out.
-     * @return the encoding of 'c'.
-     * @throws NoSuchElementException if 'c' is not in the Huffman encoding tree.
+     * @return the encoding of {@code c}.
+     * @throws NoSuchElementException if {@code c} is not in the Huffman encoding tree.
      */
     public static String getEncoding(Node root, char c) throws NoSuchElementException {
         String encoding = getEncoding(root, c, "");
@@ -120,8 +120,8 @@ public class HuffmanEncoder {
      * Recursively finds out the encoding of a given character and a given Huffman encoding tree.
      * @param n the node os the subtree to be investigated.
      * @param c the character whose encoding is to be found out.
-     * @param enc the encoding of the character up to node 'n'.
-     * @return the encoding of 'c'.
+     * @param enc the encoding of the character up to node {@code n}.
+     * @return the encoding of {@code c}.
      */
     private static String getEncoding(Node n, char c, String enc) {
         if (n.hc.character() != null && n.hc.character() == c) return enc; // investigate current node
@@ -170,8 +170,8 @@ public class HuffmanEncoder {
      * Calculates how many bits the encoded representation of a given character has.
      * @param root the root of the Huffman encoding tree.
      * @param c the character whose quantity of encoding bits is to be found out.
-     * @return the number of bits of the representation of 'c'.
-     * @throws NoSuchElementException if 'c' is not in the given Huffman encoding tree.
+     * @return the number of bits of the representation of {@code c}.
+     * @throws NoSuchElementException if {@code c} is not in the given Huffman encoding tree.
      */
     public static int getBitLength(Node root, char c) throws NoSuchElementException {
         return getEncoding(root, c).length();
@@ -181,8 +181,8 @@ public class HuffmanEncoder {
      * Encodes a plain text given a Huffman encoding tree.
      * @param root the root node of the Huffman encoding tree.
      * @param text the plain text to be encoded.
-     * @return the string encoding of 'text'.
-     * @throws NoSuchElementException if a character in 'text' is not mapped in the given Huffman encoding tree.
+     * @return the string encoding of {@code text}.
+     * @throws NoSuchElementException if a character in {@code text} is not mapped in the given Huffman encoding tree.
      */
     public static String encode(Node root, String text) throws NoSuchElementException {
         StringBuilder sb = new StringBuilder();
@@ -201,7 +201,7 @@ public class HuffmanEncoder {
      * Decodes an encoded text given its Huffman encoding tree.
      * @param root the root node of the Huffman encoding tree.
      * @param encodedText the binary string representing the encoded text.
-     * @return the string decoding of 'encodedText'.
+     * @return the string decoding of {@code encodedText}.
      * @throws IllegalArgumentException if the given encoding is not binary.
      */
     public static String decode(Node root, String encodedText) throws IllegalArgumentException {
