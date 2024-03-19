@@ -1,8 +1,14 @@
 import java.util.List;
 import java.util.PriorityQueue;
-import java.util.ArrayList;
 
+/**
+ * Utility class for building Huffman codes.
+ */
 public class HuffmanEncoder {
+
+    /**
+     * Internal class that represents a node of the Huffman encoding tree.
+     */
     public static class Node {
         public HuffmanCharacter hc;
         public Node left, right;
@@ -92,18 +98,5 @@ public class HuffmanEncoder {
         if (leftDepth > maxDepth) maxDepth = leftDepth;
         if (rightDepth > maxDepth) maxDepth = rightDepth;
         return maxDepth;
-    }
-
-    public static void main(String[] args) {
-        List<HuffmanCharacter> c = new ArrayList<>();
-        c.add(new HuffmanCharacter('a', 45));
-        c.add(new HuffmanCharacter('b', 13));
-        c.add(new HuffmanCharacter('c', 12));
-        c.add(new HuffmanCharacter('d', 16));
-        c.add(new HuffmanCharacter('e', 9));
-        c.add(new HuffmanCharacter('f', 5));
-        Node root = HuffmanEncoder.encode(c);
-        HuffmanEncoder.printTree(root);
-        System.out.println("ABL: " + HuffmanEncoder.getABL(root));
     }
 }
