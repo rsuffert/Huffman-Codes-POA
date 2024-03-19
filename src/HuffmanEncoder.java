@@ -20,7 +20,7 @@ public class HuffmanEncoder {
      * @param characters the list of characters & frequencies for which the tree should be built.
      * @return the root node of the tree.
      */
-    public static Node encode(List<HuffmanCharacter> characters) {
+    public static Node generateTree(List<HuffmanCharacter> characters) {
         // create a priority queue that keeps the Huffman characters ordered by their frequency in ascending order
         PriorityQueue<Node> pq = new PriorityQueue<>((node1, node2) -> Float.compare(node1.hc.frequency(), node2.hc.frequency()));
         for (int i=0; i<characters.size(); i++) {
@@ -137,6 +137,34 @@ public class HuffmanEncoder {
     }
 
     /**
+     * Decodes a given char encoding according to a given Huffman encoding tree.
+     * @param root the root node of the Huffman encoding tree.
+     * @param encoding the binary encoding of the character.
+     * @return the character associated with the given encoding in the given tree.
+     * @throws IllegalArgumentException if the given encoding is not binary.
+     * @throws NoSuchElementException if the given encoding is not mapped to any character in the given tree.
+     */
+    public static char decodeChar(Node root, String encoding) throws IllegalArgumentException, NoSuchElementException {
+        Node currentNode = root;
+        for (int i=0; i<encoding.length(); i++) {
+            char bit = encoding.charAt(i);
+
+            if (bit == '0') { // if bit is '0', move to the left node
+                if (currentNode.left != null) currentNode = currentNode.left;
+            }
+            else if (bit == '1') { // if bit is '1', mode to the right node
+                if (currentNode.right != null) currentNode = currentNode.right;
+            }
+            else {
+                throw new IllegalArgumentException("The given encoding is not binary");
+            }
+        }
+
+        if (currentNode.hc.character() == null) throw new NoSuchElementException("The given encoding does not have a representation in the given tree");
+        return currentNode.hc.character(); // return the character of the final node
+    }
+
+    /**
      * Calculates how many bits the encoded representation of a given character has.
      * @param root the root of the Huffman encoding tree.
      * @param c the character whose quantity of encoding bits is to be found out.
@@ -145,5 +173,54 @@ public class HuffmanEncoder {
      */
     public static int getBitLength(Node root, char c) throws NoSuchElementException {
         return getEncoding(root, c).length();
+    }
+
+    /**
+     * Encodes a plain text given a Huffman encoding tree.
+     * @param root the root node of the Huffman encoding tree.
+     * @param text the plain text to be encoded.
+     * @return the string encoding of 'text'.
+     * @throws NoSuchElementException if a character in 'text' is not mapped in the given Huffman encoding tree.
+     */
+    public static String encode(Node root, String text) throws NoSuchElementException {
+        StringBuilder sb = new StringBuilder();
+
+        // iterate over the characters in the text
+        for (int i=0; i<text.length(); i++) {
+            char c = text.charAt(i);
+            String enc = getEncoding(root, c); // encode them
+            sb.append(enc); // add to the result
+        }
+
+        return sb.toString(); // return encoding
+    }
+
+    /**
+     * Decodes an encoded text given its Huffman encoding tree.
+     * @param root the root node of the Huffman encoding tree.
+     * @param encodedText the binary string representing the encoded text.
+     * @return the string decoding of 'encodedText'.
+     * @throws IllegalArgumentException if the given encoding is not binary.
+     */
+    public static String decode(Node root, String encodedText) throws IllegalArgumentException {
+        StringBuilder text = new StringBuilder();
+
+        // iterate over the bits of encodedText
+        String encodedChar = "";
+        for (int i=0; i<encodedText.length(); i++) {
+            encodedChar += encodedText.charAt(i);
+
+            char c;
+            try { // when a possible decoding is found, append it to the resulting string
+                c = decodeChar(root, encodedChar);
+                encodedChar = "";
+                text.append(c);
+            }
+            catch (NoSuchElementException e) { // otherwise keep iterating until a possible decoding is found
+                continue;
+            }
+        }
+
+        return text.toString();
     }
 }
