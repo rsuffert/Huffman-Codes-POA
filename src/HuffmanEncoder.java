@@ -110,8 +110,8 @@ public class HuffmanEncoder {
      * @return the encoding of {@code c}.
      * @throws NoSuchElementException if {@code c} is not in the Huffman encoding tree.
      */
-    public static String getEncoding(Node root, char c) throws NoSuchElementException {
-        String encoding = getEncoding(root, c, "");
+    public static String encodeChar(Node root, char c) throws NoSuchElementException {
+        String encoding = encodeChar(root, c, "");
         if (encoding == "") throw new NoSuchElementException(String.format("Character '%c' is not present in the given tree.", c));
         return encoding;
     }
@@ -123,15 +123,15 @@ public class HuffmanEncoder {
      * @param enc the encoding of the character up to node {@code n}.
      * @return the encoding of {@code c}.
      */
-    private static String getEncoding(Node n, char c, String enc) {
+    private static String encodeChar(Node n, char c, String enc) {
         if (n.hc.character() != null && n.hc.character() == c) return enc; // investigate current node
 
         if (n.left != null) { // investigate left node
-            String e = getEncoding(n.left, c, enc+"0");
+            String e = encodeChar(n.left, c, enc+"0");
             if (!e.equals("")) return e; // if c has been found in the subtree, return it
         }
         if (n.right != null) { // investigate right node
-            String e = getEncoding(n.right, c, enc+"1");
+            String e = encodeChar(n.right, c, enc+"1");
             if (!e.equals("")) return e; // if c has been found in the subtree, return it
         }
 
@@ -173,8 +173,8 @@ public class HuffmanEncoder {
      * @return the number of bits of the representation of {@code c}.
      * @throws NoSuchElementException if {@code c} is not in the given Huffman encoding tree.
      */
-    public static int getBitLength(Node root, char c) throws NoSuchElementException {
-        return getEncoding(root, c).length();
+    public static int getEncodingBitLength(Node root, char c) throws NoSuchElementException {
+        return encodeChar(root, c).length();
     }
 
     /**
@@ -184,13 +184,13 @@ public class HuffmanEncoder {
      * @return the string encoding of {@code text}.
      * @throws NoSuchElementException if a character in {@code text} is not mapped in the given Huffman encoding tree.
      */
-    public static String encode(Node root, String text) throws NoSuchElementException {
+    public static String encodeText(Node root, String text) throws NoSuchElementException {
         StringBuilder sb = new StringBuilder();
 
         // iterate over the characters in the text
         for (int i=0; i<text.length(); i++) {
             char c = text.charAt(i);
-            String enc = getEncoding(root, c); // encode them
+            String enc = encodeChar(root, c); // encode them
             sb.append(enc); // add to the result
         }
 
@@ -204,7 +204,7 @@ public class HuffmanEncoder {
      * @return the string decoding of {@code encodedText}.
      * @throws IllegalArgumentException if the given encoding is not binary.
      */
-    public static String decode(Node root, String encodedText) throws IllegalArgumentException {
+    public static String decodeText(Node root, String encodedText) throws IllegalArgumentException {
         StringBuilder text = new StringBuilder();
 
         // iterate over the bits of encodedText
