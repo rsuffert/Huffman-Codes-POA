@@ -75,7 +75,7 @@ public class HuffmanEncoder {
     }
 
     /**
-     * Calculates the maximum number of bits needed to represent this encoding.
+     * Calculates the maximum number of bits needed to represent this encoding. By definition, this is the same as the depth of the Huffman encoding tree.
      * @param root the root of the Huffman encoding tree.
      * @return the maximum number of bits needed to represent this encoding.
      */
@@ -157,9 +157,7 @@ public class HuffmanEncoder {
             else if (bit == '1') { // if bit is '1', mode to the right node
                 if (currentNode.right != null) currentNode = currentNode.right;
             }
-            else {
-                throw new IllegalArgumentException("The given encoding is not binary");
-            }
+            else throw new IllegalArgumentException("The given encoding is not binary");
         }
 
         if (currentNode.hc.character() == null) throw new NoSuchElementException("The given encoding does not have a representation in the given tree");
@@ -208,14 +206,14 @@ public class HuffmanEncoder {
         StringBuilder text = new StringBuilder();
 
         // iterate over the bits of encodedText
-        String encodedChar = "";
+        StringBuilder encodedChar = new StringBuilder();
         for (int i=0; i<encodedText.length(); i++) {
-            encodedChar += encodedText.charAt(i);
+            encodedChar.append(encodedText.charAt(i));
 
             char c;
             try { // when a possible decoding is found, append it to the resulting string
-                c = decodeChar(root, encodedChar);
-                encodedChar = "";
+                c = decodeChar(root, encodedChar.toString());
+                encodedChar.setLength(0); // clear/reset
                 text.append(c);
             }
             catch (NoSuchElementException e) { // otherwise keep iterating until a possible decoding is found
