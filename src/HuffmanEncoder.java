@@ -27,8 +27,8 @@ public class HuffmanEncoder {
     public static Node generateTree(List<Char> characters) {
         // create a priority queue that keeps the Huffman characters ordered by their frequency in ascending order
         PriorityQueue<Node> pq = new PriorityQueue<>((node1, node2) -> Float.compare(node1.hc.frequency(), node2.hc.frequency()));
-        for (int i=0; i<characters.size(); i++) {
-            Node n = new Node(characters.get(i), null, null);
+        for (Char c : characters) {
+            Node n = new Node(c, null, null);
             pq.add(n);
         }
 
@@ -151,13 +151,22 @@ public class HuffmanEncoder {
         for (int i=0; i<encoding.length(); i++) {
             char bit = encoding.charAt(i);
 
+            boolean foundMapping = false;
             if (bit == '0') { // if bit is '0', move to the left node
-                if (currentNode.left != null) currentNode = currentNode.left;
+                if (currentNode.left != null) {
+                    foundMapping = true;
+                    currentNode = currentNode.left;
+                }
             }
             else if (bit == '1') { // if bit is '1', mode to the right node
-                if (currentNode.right != null) currentNode = currentNode.right;
+                if (currentNode.right != null) {
+                    foundMapping = true;
+                    currentNode = currentNode.right;
+                }
             }
             else throw new IllegalArgumentException("The given encoding is not binary");
+
+            if (!foundMapping) throw new NoSuchElementException("The given encoding does not have a representation in the given tree");
         }
 
         if (currentNode.hc.character() == null) throw new NoSuchElementException("The given encoding does not have a representation in the given tree");
