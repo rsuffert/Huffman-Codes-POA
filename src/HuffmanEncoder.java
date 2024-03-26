@@ -5,7 +5,7 @@ import java.util.PriorityQueue;
 /**
  * Utility class for building Huffman codes.
  * @author Ricardo B. Süffert.
- * @version 2.1.
+ * @version 2.2.
  */
 public class HuffmanEncoder {
 
@@ -110,7 +110,7 @@ public class HuffmanEncoder {
      * @return the encoding of {@code c}.
      * @throws NoSuchElementException if {@code c} is not in the Huffman encoding tree.
      */
-    public static String encodeChar(Node root, char c) throws NoSuchElementException {
+    private static String encodeChar(Node root, char c) throws NoSuchElementException {
         String encoding = encodeChar(root, c, "");
         if (encoding == "") throw new NoSuchElementException(String.format("Character '%c' is not present in the given tree.", c));
         return encoding;
@@ -146,7 +146,7 @@ public class HuffmanEncoder {
      * @throws IllegalArgumentException if the given encoding is not binary.
      * @throws NoSuchElementException if the given encoding is not mapped to any character in the given tree.
      */
-    public static char decodeChar(Node root, String encoding) throws IllegalArgumentException, NoSuchElementException {
+    private static char decodeChar(Node root, String encoding) throws IllegalArgumentException, NoSuchElementException {
         Node currentNode = root;
         for (int i=0; i<encoding.length(); i++) {
             char bit = encoding.charAt(i);
@@ -267,8 +267,9 @@ public class HuffmanEncoder {
      * @param root the root of the Huffman encoding tree.
      * @param originalAsciiText the text whose compression factor is to be calculated.
      * @return how many times the compression of {@code originalAsciiText} is shorter in size than it.
+     * @throws NoSuchElementException if a character in {@code originalAsciiText} is not mapped in the given Huffman encoding tree.
      */
-    public static double getCompressionFactor(Node root, String originalAsciiText) {
+    public static double getCompressionFactor(Node root, String originalAsciiText) throws NoSuchElementException {
         String encoding = encodeText(root, originalAsciiText);
         return (originalAsciiText.length()*8) / ((double) encoding.length());
     }
