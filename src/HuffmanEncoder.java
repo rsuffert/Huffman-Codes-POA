@@ -5,7 +5,7 @@ import java.util.PriorityQueue;
 /**
  * Utility class for building Huffman codes.
  * @author Ricardo B. Süffert.
- * @version 2.0.
+ * @version 2.1.
  */
 public class HuffmanEncoder {
 
@@ -263,12 +263,13 @@ public class HuffmanEncoder {
     }
 
     /**
-     * Calculates the compression factor of an encoding for a specific ASCII text.
-     * @param originalAsciiText the original text (before compression).
-     * @param encodedBinaryText the encoded text (after compression).
-     * @return how many times the encoded text is shorter in size than the original text.
+     * Calculates the compression factor for an ASCII text using a given Huffman encoding tree.
+     * @param root the root of the Huffman encoding tree.
+     * @param originalAsciiText the text whose compression factor is to be calculated.
+     * @return how many times the compression of {@code originalAsciiText} is shorter in size than it.
      */
-    public static double getCompressionFactor(String originalAsciiText, String encodedBinaryText) {
-        return (originalAsciiText.length()*8) / ((double) encodedBinaryText.length());
+    public static double getCompressionFactor(Node root, String originalAsciiText) {
+        String encoding = encodeText(root, originalAsciiText);
+        return (originalAsciiText.length()*8) / ((double) encoding.length());
     }
 }

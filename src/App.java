@@ -57,6 +57,6 @@ public class App {
         System.out.printf("- Huffman compression (%d bits, %d bytes): %s\n", encodedText.length(), (int) Math.ceil(encodedText.length()/8.0), encodedText);
         System.out.printf("- Huffman decompression: %s\n", HuffmanEncoder.decodeText(root, encodedText));
         System.out.printf("- ABL = %.2f\n", HuffmanEncoder.getABL(root));
-        System.out.printf("- Compression factor: %.2f\n", HuffmanEncoder.getCompressionFactor(text, encodedText));
+        System.out.printf("- Compression factor: %.2f\n", HuffmanEncoder.getCompressionFactor(root, text));
     } 
 }
