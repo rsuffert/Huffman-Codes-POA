@@ -5,7 +5,7 @@ import java.util.PriorityQueue;
 /**
  * Utility class for building Huffman codes.
  * @author Ricardo B. Süffert.
- * @version 1.0.0.
+ * @version 2.0.
  */
 public class HuffmanEncoder {
 
@@ -231,5 +231,44 @@ public class HuffmanEncoder {
         }
 
         return text.toString();
+    }
+    
+    /**
+     * Calculates the average bit length (ABL) of the given Huffman encoding tree.
+     * @param root the root of the Huffman encoding tree whose ABL is to be calculated.
+     * @return the ABL of the given Huffman encoding tree.
+     */
+    public static double getABL(Node root) {
+        if (root == null) return 0.0;
+        return getABL(root, root);
+    }
+
+    /**
+     * Recursively calculates the average bit length (ABL) of the given Huffman encoding tree.
+     * @param root the root of the Huffman encoding tree whose ABL is to be calculated.
+     * @param n the current subtree being investigated.
+     * @return the ABL of the given Huffman encoding tree.
+     */
+    private static double getABL(Node root, Node n) {
+        double abl = 0.0;
+
+        if (n.hc.character != null) // investigate if current node is a character (leaf) node
+            return n.hc.frequency * getEncodingBitLength(root, n.hc.character); // return its ABL
+        else { // investigate child nodes
+            if (n.left != null) abl += getABL(root, n.left); // investigate left node
+            if (n.right != null) abl += getABL(root, n.right); // investigate right node
+        }
+
+        return abl;
+    }
+
+    /**
+     * Calculates the compression factor of an encoding for a specific ASCII text.
+     * @param originalAsciiText the original text (before compression).
+     * @param encodedBinaryText the encoded text (after compression).
+     * @return how many times the encoded text is shorter in size than the original text.
+     */
+    public static double getCompressionFactor(String originalAsciiText, String encodedBinaryText) {
+        return (originalAsciiText.length()*8) / ((double) encodedBinaryText.length());
     }
 }

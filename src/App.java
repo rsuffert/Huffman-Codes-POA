@@ -56,11 +56,7 @@ public class App {
         System.out.printf("- Initial text (%d bits, %d bytes): %s\n", text.length()*8, text.length(), text);
         System.out.printf("- Huffman compression (%d bits, %d bytes): %s\n", encodedText.length(), (int) Math.ceil(encodedText.length()/8.0), encodedText);
         System.out.printf("- Huffman decompression: %s\n", HuffmanEncoder.decodeText(root, encodedText));
-
-        // calculate ABL
-        double accumulator = 0.0;
-        for (HuffmanEncoder.Char c : characters)
-            accumulator += c.frequency() * HuffmanEncoder.getEncodingBitLength(root, c.character());
-        System.out.printf("- ABL = %.2f\n", accumulator);
+        System.out.printf("- ABL = %.2f\n", HuffmanEncoder.getABL(root));
+        System.out.printf("- Compression factor: %.2f\n", HuffmanEncoder.getCompressionFactor(text, encodedText));
     } 
 }
